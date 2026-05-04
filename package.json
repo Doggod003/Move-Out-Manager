@@ -1,0 +1,100 @@
+import { Link } from 'react-router-dom'
+import { ArrowRight, CheckCircle2, X } from 'lucide-react'
+import Logo from '../components/Logo.jsx'
+
+const PLANS = [
+  { name: 'Solo', price: 0, desc: 'For your own moves', cta: 'Start free', features: ['Up to 3 properties', 'Full AI agent', 'Calendar + timeline', 'Document vault', 'Basic vendor directory', 'Closing packet (watermarked)'] },
+  { name: 'Pro', price: 29, popular: true, desc: 'For active agents & PMs', cta: 'Start 14-day trial', features: ['Unlimited properties', 'Team of 3', 'Full vendor directory', 'Closing packet exports', 'Priority AI processing', 'Custom checklists', 'Email reminders'] },
+  { name: 'Team', price: 99, desc: 'For growing portfolios', cta: 'Start 14-day trial', features: ['Everything in Pro', 'Unlimited team members', 'Role-based access', 'White-label closing packets', 'API access', 'SSO + SAML', 'Dedicated support'] },
+]
+
+const COMPARE_ROWS = [
+  ['Properties', '3', 'Unlimited', 'Unlimited'],
+  ['Team members', '1', '3', 'Unlimited'],
+  ['AI agent', true, true, true],
+  ['Calendar / timeline', true, true, true],
+  ['Document vault', true, true, true],
+  ['Closing packet PDFs', 'Watermarked', true, 'White-label'],
+  ['Vendor directory', 'Basic', true, true],
+  ['Role-based access', false, false, true],
+  ['API access', false, false, true],
+  ['SSO + SAML', false, false, true],
+  ['Priority AI', false, true, true],
+  ['Email support', true, true, 'Dedicated'],
+]
+
+export default function Pricing() {
+  return (
+    <div className="min-h-screen bg-ink-50">
+      <header className="sticky top-0 z-40 backdrop-blur-md bg-ink-50/80 border-b border-ink-200">
+        <div className="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between">
+          <Link to="/"><Logo /></Link>
+          <Link to="/app" className="btn-brand btn-sm">Start free<ArrowRight className="w-3.5 h-3.5" /></Link>
+        </div>
+      </header>
+
+      <section className="py-20 lg:py-28">
+        <div className="max-w-4xl mx-auto px-6 text-center">
+          <h1 className="text-5xl md:text-7xl font-bold tracking-tighter text-ink-900">Pricing.</h1>
+          <p className="mt-6 text-xl text-ink-600">Free for personal moves. Pro when it's a business. No hidden fees.</p>
+        </div>
+      </section>
+
+      <section className="pb-20">
+        <div className="max-w-6xl mx-auto px-6 grid grid-cols-1 md:grid-cols-3 gap-6">
+          {PLANS.map(p => (
+            <div key={p.name} className={`p-7 rounded-2xl border ${p.popular ? 'border-brand-500 ring-2 ring-brand-500/20 bg-white shadow-floaty' : 'border-ink-200 bg-white'}`}>
+              {p.popular && <div className="inline-flex px-2.5 py-0.5 rounded-full bg-brand-600 text-white text-xs font-medium mb-4">Most popular</div>}
+              <div className="text-sm text-ink-500 mb-1">{p.name}</div>
+              <div className="flex items-baseline gap-1 mb-2">
+                <span className="text-5xl font-bold text-ink-900 tracking-tighter">${p.price}</span>
+                <span className="text-ink-500">/mo</span>
+              </div>
+              <p className="text-sm text-ink-600 mb-5">{p.desc}</p>
+              <Link to="/app" className={p.popular ? 'btn-brand w-full' : 'btn-secondary w-full'}>{p.cta}</Link>
+              <ul className="mt-6 space-y-2.5">
+                {p.features.map(f => (
+                  <li key={f} className="text-sm text-ink-700 flex items-start gap-2">
+                    <CheckCircle2 className="w-4 h-4 text-emerald-600 mt-0.5 flex-shrink-0" />{f}
+                  </li>
+                ))}
+              </ul>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      <section className="pb-24">
+        <div className="max-w-5xl mx-auto px-6">
+          <h2 className="text-3xl font-bold tracking-tighter text-ink-900 mb-6">Compare plans</h2>
+          <div className="rounded-2xl border border-ink-200 overflow-hidden bg-white">
+            <table className="w-full">
+              <thead>
+                <tr className="bg-ink-50 border-b border-ink-200">
+                  <th className="text-left px-5 py-3 text-xs font-semibold text-ink-600 uppercase tracking-wider">Feature</th>
+                  <th className="text-center px-5 py-3 text-xs font-semibold text-ink-600 uppercase tracking-wider">Solo</th>
+                  <th className="text-center px-5 py-3 text-xs font-semibold text-brand-700 uppercase tracking-wider">Pro</th>
+                  <th className="text-center px-5 py-3 text-xs font-semibold text-ink-600 uppercase tracking-wider">Team</th>
+                </tr>
+              </thead>
+              <tbody>
+                {COMPARE_ROWS.map((r, i) => (
+                  <tr key={i} className="border-b border-ink-100 last:border-0">
+                    <td className="px-5 py-3.5 text-sm text-ink-800 font-medium">{r[0]}</td>
+                    {[1,2,3].map(idx => (
+                      <td key={idx} className="px-5 py-3.5 text-center text-sm">
+                        {r[idx] === true ? <CheckCircle2 className="w-5 h-5 text-emerald-600 inline" /> :
+                         r[idx] === false ? <X className="w-5 h-5 text-ink-300 inline" /> :
+                         <span className="text-ink-700">{r[idx]}</span>}
+                      </td>
+                    ))}
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+    </div>
+  )
+}
